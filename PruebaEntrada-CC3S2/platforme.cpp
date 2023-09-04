@@ -24,12 +24,12 @@ void solve(int n, coords &p)
             int x1_ = p[j].second.first;
             int x2_ = p[j].second.second;
 
-            if (!flag1 && x1 > x1_ && x1 < x2_)
+            if (!flag1 && x1 >= x1_ && x1 < x2_)
             {
                 ans += y - y_;
                 flag1 = true;
             }
-            if (!flag2 && x2 > x1_ && x2 < x2_)
+            if (!flag2 && x2 > x1_ && x2 <= x2_)
             {
                 ans += y - y_;
                 flag2 = true;
