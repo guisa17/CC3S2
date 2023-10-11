@@ -1,0 +1,223 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "e71ad4bf-1f94-468d-b05c-87008fd81fc9",
+   "metadata": {},
+   "source": [
+    "### Pregunta 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "e9569249-998b-42d1-9c3e-688dd077254e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Contiene todas las letras excepto: f\n",
+      "Contiene todas las letras excepto: z\n"
+     ]
+    }
+   ],
+   "source": [
+    "def missing_letter(str)\n",
+    "    alpha = ('a'..'z').to_a\n",
+    "    missed = (alpha - str.chars).first\n",
+    "    puts str.chars\n",
+    "    return missed\n",
+    "end\n",
+    "\n",
+    "input = \"the quick brown box jumps over a lazy dog\"\n",
+    "missed = missing_letter(input)\n",
+    "puts \"Contiene todas las letras excepto: #{missed}\"\n",
+    "\n",
+    "input = \"abcdefghijklmnopqrstuvwxy\"\n",
+    "missed = missing_letter(input)\n",
+    "puts \"Contiene todas las letras excepto: #{missed}\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2c0bea51-4d87-46a4-adca-e5047bccca86",
+   "metadata": {},
+   "source": [
+    "Creamos una funcion que tomará como parámetro un string, la cadena a leer. Luego, inicializamos un arreglo con las letras del alfebeto, y la letra que nos falta será el alfabeto menos cada una de las letras que tengamos de nuestro string. Como se nos garantiza que solo es un elemento el faltante, seleccionamos el primer elemento de nuestro nuevo arreglo, y lo devolvemos. Además se comprueba que tiene complejidad O(n) porque a lo más tendrá que recorrer todo el string ingresado."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ab66e9ef-9e55-45ef-b89f-5f424ff167e4",
+   "metadata": {},
+   "source": [
+    "### Pregunta 2 y 3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "8659ceaa-ef7f-44f4-bb50-3add4b3b6b9e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Arbol vacio: false\n",
+      "Elementos del binary tree: \n",
+      "1\n",
+      "2\n",
+      "3\n",
+      "5\n",
+      "6\n",
+      "El arbol tiene el elemento 3: true\n",
+      "Todos los elementos del arbol son pares: false\n",
+      "Algunos de los elementos del arbol es impar: true\n",
+      "Elementos ordenados: [1, 2, 3, 5, 6]\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Nodo\n",
+    "    attr_accessor :valor, :izq, :der\n",
+    "\n",
+    "    def initialize(valor)\n",
+    "        @valor = valor \n",
+    "        @izq = nil\n",
+    "        @der = nil\n",
+    "    end\n",
+    "end\n",
+    "\n",
+    "\n",
+    "class BinaryTree\n",
+    "    include Enumerable\n",
+    "        \n",
+    "    attr_accessor :raiz\n",
+    "\n",
+    "    # Pregunta 2\n",
+    "    \n",
+    "    def initialize\n",
+    "        @raiz = nil\n",
+    "    end\n",
+    "    \n",
+    "    def <<(valor)\n",
+    "        @raiz = insert(@raiz, valor)\n",
+    "    end\n",
+    "\n",
+    "    def empty?\n",
+    "        @raiz.nil?\n",
+    "    end\n",
+    "\n",
+    "    def each(&block)\n",
+    "        orden(@raiz, &block)\n",
+    "    end\n",
+    "\n",
+    "    # Pregunta 3\n",
+    "\n",
+    "    def include?(elt)\n",
+    "        busca(@raiz, elt)\n",
+    "    end\n",
+    "\n",
+    "    def all?(&block)\n",
+    "        each { |elt| return false unless block.call(elt) }\n",
+    "        true\n",
+    "    end\n",
+    "\n",
+    "    def any?(&block)\n",
+    "        each { |elt| return true if block.call(elt)}\n",
+    "        false\n",
+    "    end\n",
+    "\n",
+    "    def sort\n",
+    "        to_a.sort\n",
+    "    end\n",
+    "    \n",
+    "\n",
+    "    def insert(nodo, valor)\n",
+    "        return Nodo.new(valor) if nodo.nil?\n",
+    "\n",
+    "        if valor < nodo.valor\n",
+    "            nodo.izq = insert(nodo.izq, valor)\n",
+    "        elsif valor > nodo.valor\n",
+    "            nodo.der = insert(nodo.der, valor)\n",
+    "        end\n",
+    "        nodo\n",
+    "    end\n",
+    "\n",
+    "    def orden(nodo, &block)\n",
+    "        return if nodo.nil?\n",
+    "\n",
+    "        orden(nodo.izq, &block)\n",
+    "        block.call(nodo.valor)\n",
+    "        orden(nodo.der, &block)\n",
+    "    end\n",
+    "\n",
+    "    def busca(nodo, elt)\n",
+    "        return false if nodo.nil?\n",
+    "        return true if nodo.valor == elt\n",
+    "\n",
+    "        if elt < nodo.valor\n",
+    "            busca(nodo.izq, elt)\n",
+    "        else\n",
+    "            busca(nodo.der, elt)\n",
+    "        end\n",
+    "    end\n",
+    "end\n",
+    "\n",
+    "\n",
+    "tree = BinaryTree.new\n",
+    "tree << 2\n",
+    "tree << 1\n",
+    "tree << 3\n",
+    "tree << 6\n",
+    "tree << 5\n",
+    "\n",
+    "puts \"Arbol vacio: #{tree.empty?}\"\n",
+    "\n",
+    "puts \"Elementos del binary tree: \"\n",
+    "tree.each do |element|\n",
+    "    puts element\n",
+    "end\n",
+    "\n",
+    "puts \"El arbol tiene el elemento 3: #{tree.include?(3)}\"\n",
+    "puts \"Todos los elementos del arbol son pares: #{tree.all? { |elt| elt.even? }}\"\n",
+    "puts \"Algunos de los elementos del arbol es impar: #{tree.any? { |elt| elt.odd? }}\"\n",
+    "puts \"Elementos ordenados: #{tree.sort}\" "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "09d5cb96-4910-4125-b54b-b2845dcd8061",
+   "metadata": {},
+   "source": [
+    "Hemos creado dos clases, la clase nodo y la clase BinaryTree. Se crea la clase nodo como elemento de la clase BinaryTree. Luego se definen los métodos << (insertar elemento), el cual llamará al método insert, en donde se agregan los nodos según el orden de un árbol binario, los menores a la izquierda y los mayores a la derecha. Luego, el método empty que nos dirá si nuestro árbol está vacío o no, fijándose solo en la raiz. Por último, el método each el cual llamará al método orden que nos dará nuestros elementos del arreglo en inorden, primero se va a los nodos más a la izquierda e hijos y luego a la derecha, así repetidamente."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "57c72e9b-9be9-4a3d-a0b5-5ea81e53d746",
+   "metadata": {},
+   "source": [
+    "Por otro lado, se crean los métodos include, que llamará al método busca, para poder buscar un elemento elt particular en el árbol. Luego, tenemos el método all, que, usando each, revisará si para todos los elementos del árbol se cumple una cierta condición. De la misma manera, para el método any, se revisará si existe algún elemento que cumpla una cierta condición. Por último, el método sort convertirá nuestro árbol en un arreglo y lo ordenará."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Ruby 3.0.2",
+   "language": "ruby",
+   "name": "ruby"
+  },
+  "language_info": {
+   "file_extension": ".rb",
+   "mimetype": "application/x-ruby",
+   "name": "ruby",
+   "version": "3.0.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
