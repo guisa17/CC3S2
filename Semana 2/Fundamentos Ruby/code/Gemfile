@@ -1,2 +1,7 @@
 source 'https://rubygems.org'
-gem 'rspec'
+# gem 'rspec'
+# gem 'autotest', '~> 5.0'
+group :development do
+    gem 'rspec'
+    gem 'guard-rspec', require: false
+end
