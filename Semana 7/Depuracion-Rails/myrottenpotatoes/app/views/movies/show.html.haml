@@ -11,5 +11,7 @@
     = @movie.release_date.strftime("%B %d, %Y")
 
 %h3 Description:
+
+= @movie.inspect
 = link_to 'Edit info', edit_movie_path(@movie)
 = link_to 'Back to movie list', movies_path

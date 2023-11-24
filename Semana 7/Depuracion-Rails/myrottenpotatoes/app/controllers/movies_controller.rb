@@ -3,9 +3,17 @@ class MoviesController < ApplicationController
     @movies = Movie.all
   end
   def show
-    id = params[:id] # retrieve movie ID from URI route
-    @movie = Movie.find(id) # look up movie by unique ID
-    # will render render app/views/movies/show.html.haml by default
+    # begin
+        id = params[:id] # retrieve movie ID from URI route
+        # raise params.inspect
+        byebug
+        @movie = Movie.find(id) # look up movie by unique ID
+        # logger.debug("Movie details: #{@movie.inspect}")
+        # will render render app/views/movies/show.html.haml by default
+
+    # rescue => e
+        # logger.debug("Found exception: #{e.message}")
+    # end
   end
   def new
     @movie = Movie.new
