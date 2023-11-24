@@ -42,8 +42,8 @@ Del specfile, cambiaremos aquellas líneas `xpecify` por `specify` que vayamos a
 Para nuestro primer caso implementado, veremos una línea en verde y el resto en amarillo:
 ```ruby
 def self.any_candice
-    Customer.where(first: 'Candice')
-  end
+  Customer.where(first: 'Candice')
+end
 ```
 ![Alt text](img/image-6.png)
 
