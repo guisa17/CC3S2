@@ -59,3 +59,54 @@ Los resultados obtenidos son los siguientes:
 
 ### Arrays
 
+A continuación se presentan casos de cómo se comportan los arrays en JavaScript.
+
+```js
+arr1 = [1, 2, 3] + [4, 5, 6]
+arr2 = !![]
+arr3 = [10, 1, 3].sort()
+
+console.log(arr1)
+console.log(arr2)
+console.log([] == true)
+console.log(arr3)
+console.log([] == 0)
+```
+
+![Alt text](image-1.png)
+
+
+- `[1, 2, 3] + [4, 5, 6]` obtenemos `1, 2, 34, 5, 6` porque lo que se está haciendo es que los elementos de los arreglos se convierten en string y son concatenados.
+
+- `!![]` obtenemos `true` porque, aunque nuestro array esté vacío, este es un objeto y se tomará como verdadero.
+
+- `[] == true` obtenemos `false` porque en comparaciones no estrictas, el arreglo vacío se convertirá en `0`, y `true` se convierte en `1`.
+
+- `[10, 1, 3].sort()` obtenemos impreso el arreglo `[1, 10, 3]` ordenado; sin embargo, será según orden lexicográfico.
+
+- `[] == 0` será `true` debido a que en comparaciones no estrictas, nuestro arreglo vacío se convierte en `0`.
+
+
+### Clausuras
+
+En JavaScript, las clausuras son una técnica popular que combina funciones con referencias a su entorno circundante. Funcionan como funciones de orden superior en Python, permitiendo que una función interna acceda al alcance de una función externa incluso después de que la función externa haya finalizado. Sea nuestro ejemplo:
+
+```js
+function f1(x) {
+  var baz = 3;
+  return function (y) {
+    console.log(x + y + (baz++));
+    }
+}
+var bar = f1(5);
+bar(11);
+```
+
+Cuyo resultado será:
+![Alt text](image-2.png)
+
+Este resultado se obtiene dado que iniciamos llamando a `f1(5)`, con lo que tendremos `x = 5` y se inicializa `baz = 3`. Luego, en la última línea, llamamos a `bar(11)`, por lo que tendremos `y = 11`. Finalmente, en consola se imprimirá el resultado de `x + y + baz++ = 5 + 11 + 3 = 19`, y en la siguiente llamada, `baz` será 4.
+
+
+### Algoritmos
+
