@@ -42,7 +42,7 @@ A continuación, para poder comprobar nuestros resultados en consola, debemos re
 $ rails generate migration CreateMoviegoers
 ```
 
-![Alt text](image.png)
+![Alt text](img/image.png)
 
 Podremos encontrar en `db/migrate` el siguiente bloque de código:
 
@@ -61,10 +61,10 @@ Ahora, ya podremos ejecutar nuestra migración por medio de:
 ```bash
 $ rails db:migrate
 ```
-![Alt text](image-1.png)
+![Alt text](img/image-1.png)
 
 Con esto realizado, ya podremos verificar nuestros resultados en la consola:
-![Alt text](image-2.png)
+![Alt text](img/image-2.png)
 
 
 Luego, se nos pide explicar el siguiente bloque de código, que se encuentra en `app/controllers/movies_controller.rb`:
@@ -129,7 +129,7 @@ end
 ```
 
 Y en la consola comprobaremos lo siguiente:
-![Alt text](image-3.png)
+![Alt text](img/image-3.png)
 
 Vemos que a pesar de haber "escrito mal" Star Wars, se ha modificado de manera exitosa.
 
@@ -158,7 +158,7 @@ Notamos cómo nuestro filtro hace uso de `set_current_user` que se ejecuta antes
 Para este apartado, crearemos un modelo y una migración usando el siguiente comando y haremos uso de `rails db:migrate` para la migración.
 
 a) Creamos el modelo `moviegoers` y su migración respectiva.
-![Alt text](image-4.png)
+![Alt text](img/image-4.png)
 
 b) Editamos el código `app/models/moviegoer.rb` de la siguiente manera:
 
@@ -203,3 +203,130 @@ class SessionsController < ApplicationController
   end
 end
 ```
+
+Para continuar con el desarrollo de la actividad, es necesario generar nuestras APIs en una cuenta de desarrollador de Twitter. Así tendremos nuestro `API_KEY` y `API_SECRET`.
+
+![Alt text](img/image-5.png)
+
+Con esto datos generados, modificaremos nuestro archivo de configuración `initializers/omniauth.rb`.
+```ruby
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :twitter, 'Au94PsKWJjqYmPN7dIpTuqHbd', 'EBIHrBwGNbtLo8otYru6a98OgbhCyTGksP1OPRno2WREQdDeje'
+end
+```
+
+**Pregunta**: Debes tener cuidado para evitar crear una vulnerabilidad de seguridad. ¿Qué sucede si un atacante malintencionado crea un envío de formulario que intenta modificar params[:moviegoer][:uid] o params[:moviegoer][:provider] (campos que solo deben modificarse mediante la lógica de autenticación) publicando campos de formulario ocultos denominados params[moviegoer][uid] y así sucesivamente?.
+
+Si un atacante logra enviar valores manipulados para uid y provider, podría intentar asumir la identidad de otro usuario, ya que estos son datos críticos utilizados en el proceso de autenticación. Por ejemplo, si un usuario normalmente se autentica con un proveedor externo (como Twitter) y el atacante logra cambiar el uid y provider en el formulario, podría intentar autenticarse como otro usuario maliciosamente.
+
+
+## Asociaciones y claves foráneas
+
+Una asociación es una relación lógica entre dos tipos de entidades de una arquitectura software. Por ejemplo, podemos añadir a RottenPotatoes las clases Review (crítica) y Moviegoer (espectador o usuario) para permitir que los usuarios escriban críticas sobre sus películas favoritas; podríamos hacer esto añadiendo una asociación de uno a muchos (one-to-many) entre las críticas y las películas (cada crítica es acerca de una película) y entre críticas y usuarios (cada crítica está escrita por exactamente un usuario).
+
+```sql
+SELECT reviews.*
+    FROM movies JOIN reviews ON movies.id=reviews.movie_id
+    WHERE movies.id = 41;
+```
+
+Esta consulta SQL selecciona todas las columnas de la tabla reviews para aquellas filas donde hay una coincidencia entre la columna id de la tabla movies y la columna movie_id de la tabla reviews, y donde el valor de id en la tabla movies es igual a 41.
+
+Comprueba la implementación sencilla de asociaciones de hacer referencia directamente a objetos asociados, aunque estén almacenados en diferentes tablas de bases de datos. ¿Por que se puede hacer esto?
+
+```ruby
+# it would be nice if we could do this:
+inception = Movie.where(:title => 'Inception')
+alice,bob = Moviegoer.find(alice_id, bob_id)
+# alice likes Inception, bob less so
+alice_review = Review.new(:potatoes => 5)
+bob_review   = Review.new(:potatoes => 3)
+# a movie has many reviews:
+inception.reviews = [alice_review, bob_review]
+# a moviegoer has many reviews:
+alice.reviews << alice_review
+bob.reviews << bob_review
+# can we find out who wrote each review?
+inception.reviews.map { |r| r.moviegoer.name } # => ['alice','bob']
+```
+
+Es posible gracias a que Rails facilita la manipulación directa de objetos interrelacionados. Esto implica que podemos trabajar con las conexiones entre distintas entidades, como modelos de base de datos en este escenario, tratándolos como objetos en nuestro código. De esta manera, se oculta la complejidad de las consultas SQL. Por ejemplo, en vez de redactar consultas SQL complicadas para vincular una película con sus críticas.
+
+a) Crea y aplica esta migración para crear la tabla Reviews. Las claves foraneas del nuevo modelo están relacionadas con las tablas movies y moviegoers existentes por convención sobre la configuración. 
+![Alt text](img/image-7.png)
+
+Y editamos el archivo `db/migrate/*_create_reviews.rb` de la siguiente manera:
+
+```ruby
+class CreateReviews < ActiveRecord::Migration[6.0]
+    def change
+        create_table 'reviews' do |t|
+        t.integer    'potatoes'
+        t.text       'comments'
+        t.references 'moviegoer'
+        t.references 'movie'
+        end
+    end
+end
+```
+
+b) Colocaremos el siguiente modelo de revisión en `app/models/review.rb`.
+
+```ruby
+class Review < ActiveRecord::Base
+    belongs_to :movie
+    belongs_to :moviegoer
+end
+```
+
+c) Colocaremos una copia de la siguiente línea en cualquier lugar dentro de la clase Movie Y dentro de la clase Moviegoer (idiomáticamente, debería ir justo después de 'class Movie' o 'class Moviegoer'), es decir realiza este cambio de una línea en cada uno de los archivos existentes `movie.rb` y `moviegoer.rb`.
+
+
+```ruby
+has_many :reviews
+```
+
+## Asociaciones indirectas
+
+Agregaremos `has_many :moviegoers, :through => :reviews` al modelo `Movie`, para establecer una conexión a través de las críticas. Posteriormente, al llamar `movie.moviegoers`, puedes obtener los usuarios asociados para una película específica.
+
+```ruby
+class Movie < ActiveRecord::Base
+    has_many :reviews
+    has_many :moviegoers, through: :reviews
+
+    def self.all_ratings ; %w[G PG PG-13 R NC-17] ; end #  shortcut: array of strings
+    validates :title, :presence => true
+    validates :release_date, :presence => true
+    validate :released_1930_or_later # uses custom validator below
+    validates :rating, :inclusion => {:in => Movie.all_ratings},
+        :unless => :grandfathered?
+    def released_1930_or_later
+        errors.add(:release_date, 'must be 1930 or later') if
+        release_date && release_date < Date.parse('1 Jan 1930')
+    end
+    @@grandfathered_date = Date.parse('1 Nov 1968')
+    def grandfathered?
+        release_date && release_date < @@grandfathered_date
+    end
+end
+
+class Movie < ActiveRecord::Base
+    before_save :capitalize_title
+    def capitalize_title
+        self.title = self.title.split(/\s+/).map(&:downcase).
+        map(&:capitalize).join(' ')
+    end
+end
+```
+
+**Pregunta** Qué nos indica el siguiente código SQL.
+
+```sql
+SELECT movies .*
+    FROM movies JOIN reviews ON movies.id = reviews.movie_id
+    JOIN moviegoers ON moviegoers.id = reviews.moviegoer_id
+    WHERE moviegoers.id = 1;
+```
+
+Esta consulta SQL selecciona todas las columnas de las películas que han sido criticadas por un usuario con el ID 1. Utiliza las tablas movies, reviews, y moviegoers, estableciendo las relaciones adecuadas entre ellas.

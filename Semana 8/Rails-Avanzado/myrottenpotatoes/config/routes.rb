@@ -10,3 +10,4 @@ Myrottenpotatoes::Application.routes.draw do
 
   root :to => redirect('/movies')
 end
+
