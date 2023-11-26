@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> RottenPotatoes! </title>
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+    <%= javascript_include_tag :application %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="container">
+      <%- if flash[:notice] %>
+      <div class="row<%= (' adult' unless movie.rating =~ /^G|PG$/) %>">
+      <%- elsif flash[:alert] %>
+      <div class="alert alert-danger text-center"><%=flash[:alert]%></div>
+      <% end %>
+      <%= yield %>
+    </div>
+  </body>
+</html>
