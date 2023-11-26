@@ -6,24 +6,10 @@ Iniciaremos con esta actividad instalando las gemas necesarias `bundle` y realiz
 
 ## Parte 1
 
-Nos dirigiremos a nuestro controlador `show` que se encuentra en `app/controllers/movies_controller.rb`, de esta manera, ya no será necesario definir una nueva ruta. Luego, modificaremos nuestra vista `show`, tal que se incluya:
+Nos dirigiremos a nuestro controlador `show` que se encuentra en `app/controllers/movies_controller.rb`, de esta manera, ya no será necesario definir una nueva ruta. Luego, crearemos nuestra vista parcial como `_movies.html.erb`.
 
 ```rb
-# show.html.erb
-<h1>Details about <%= @movie.title %></h1>
-
-<div id="metadata">
-  <ul id="details">
-    <li> Rating: <%= @movie.rating %> </li>
-    <li> Released on: <%= @movie.release_date.strftime('%F') %> </li>
-  </ul>
-</div>
-
-<div id="description">
-  <h2>Description:</h2>
-  <p> <%= @movie.description %> </p>
-</div>
-
+# _movie.html.erb
 <p> <%= movie.description %> </p>
 <%= link_to 'Edit Movie', edit_movie_path(movie), :class => 'btn btn-primary' %>
 <%= link_to 'Close', '', :id => 'closeLink', :class => 'btn btn-secondary' %>

@@ -12,6 +12,5 @@
   <p> <%= @movie.description %> </p>
 </div>
 
-<p> <%= movie.description %> </p>
-<%= link_to 'Edit Movie', edit_movie_path(movie), :class => 'btn btn-primary' %>
-<%= link_to 'Close', '', :id => 'closeLink', :class => 'btn btn-secondary' %>
+<%= link_to 'Edit this movie', edit_movie_path(@movie), :class => 'btn' %>
+<%= link_to 'Back to movie list', movies_path, :class => 'btn btn-primary' %>
