@@ -43,7 +43,7 @@ console.log("" == false);
 ```
 
 Los resultados obtenidos son los siguientes:
-![Alt text](image.png)
+![Alt text](img/image.png)
 
 - `undefined == null` es `true` debido a que ambos representan valor nulo y son tratados iguales en comparaciones estrictas `===`. 
 
@@ -73,7 +73,7 @@ console.log(arr3)
 console.log([] == 0)
 ```
 
-![Alt text](image-1.png)
+![Alt text](img/image-1.png)
 
 
 - `[1, 2, 3] + [4, 5, 6]` obtenemos `1, 2, 34, 5, 6` porque lo que se está haciendo es que los elementos de los arreglos se convierten en string y son concatenados.
@@ -103,10 +103,186 @@ bar(11);
 ```
 
 Cuyo resultado será:
-![Alt text](image-2.png)
+![Alt text](img/image-2.png)
 
 Este resultado se obtiene dado que iniciamos llamando a `f1(5)`, con lo que tendremos `x = 5` y se inicializa `baz = 3`. Luego, en la última línea, llamamos a `bar(11)`, por lo que tendremos `y = 11`. Finalmente, en consola se imprimirá el resultado de `x + y + baz++ = 5 + 11 + 3 = 19`, y en la siguiente llamada, `baz` será 4.
 
 
 ### Algoritmos
 
+Reescribiremos la siguiente que encuentra el mayor elemento de un array de complejidad `O(n²)` a `O(n)`.
+
+```js
+function greatestNumber(array) {
+  for (let i of array) {
+    let isIValTheGreatest = true;
+    for (let j of array) {
+      if (j > i) {
+        isIValTheGreatest = false;
+      }
+    }
+    if (isIValTheGreatest) {
+      return i;
+    }
+  }
+}
+```
+
+La lógica que seguiremos para reducir la complejidad será introducir una variable temporal en la que se almacene el máximo valor encontrado, este valor se irá actualizando con cada elemento que hayamos recogido. Una vez hayamos recorrido todo el arreglo, habremos encontrado el máximo elemento.
+
+```js
+function greatestNumber(array) {
+    let max = array[0];
+    for (let i of array) 
+    {
+        if (i > max) {
+            max = i;
+        }
+    }
+    return max;
+}
+```
+
+Sea nuestro ejemplo el siguiente:
+```js
+console.log(greatestNumber([2, 4, 5, 6, 10, 8]));
+```
+![Alt text](img/image-3.png)
+
+
+Sea la siguiente función que realiza la búsqueda de `x` en un string. Veremos que su complejidad es de `O(n)`, pues recorre todo el arreglo; sin embargo, podemos optimizarla, de manera que, apenas encuentre `x` se termine la búsqueda.
+```js
+function containsX(string) {
+    foundX = false;
+    for(let i = 0; i < string.length; i++) {
+        if (string[i] === "X") {
+            foundX = true;
+        }
+    }
+    return foundX;
+  }
+```
+La función optimizada será de la siguiente forma:
+
+```js
+function containsX(string) {
+    for (let s of string) {
+        if (s == 'X') {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+Sea nuestro ejemplo el siguiente:
+```js
+console.log(containsX('Los archivos X'));
+```
+![Alt text](img/image-4.png)
+
+
+Por último, escribiremos una función que devuelva el primer carácter no duplicado de una cadena. Para ello, primero tendremos que hallar las frecuencias de cada una de las letras en un diccionario, esto sería `O(n)`, y luego, de los elementos del diccionario, el primer elemento que tenga una frecuencia de 1 será el primer carácter no dupilicado, y retornamos. Este último paso también es `O(n)`, y al sumar las complejidades, nos quedaríamos con un algoritmo `O(n)`.
+
+```js
+function firstDuplicate(string) {
+    // Diccionario para las frecuencias
+    let freq = {}
+    for (let s of string) {
+        // Verificamos si ya tenemos algún elemento para freq
+        // de lo contrario, será 0
+        freq[s] = (freq[s] || 0) + 1;
+    }
+
+    for (let s of string) {
+        if (freq[s] == 1) {
+            return s;
+        }
+    }
+    return 'Not found';
+}
+```
+
+Sea nuestro ejemplo el siguiente:
+```js
+console.log(firstDuplicate('minimum'));
+```
+![Alt text](img/image-5.png)
+
+
+### Clases
+
+Diseñaremos las clases `Pokemon` y `Charizard`. 
+
+Sea la clase `Pokemon` que requiere: 
+- El constructor toma 3 parámetros (HP, ataque, defensa)
+- El constructor debe crear 6 campos (HP, ataque, defensa, movimiento, nivel, tipo). Los valores de (mover, nivelar, tipo) debe - inicializarse en ("", 1, "").
+- Implementa un método flight que arroje un error que indique que no se especifica ningún movimiento.
+- Implementa un método canFly que verifica si se especifica un tipo. Si no, arroja un error. Si es así, verifica si el tipo incluye "volar". En caso afirmativo, devuelve verdadero; si no, devuelve falso.
+
+```js
+class Pokemon {
+    constructor(HP, ataque, defensa) {
+        this.HP = HP;
+        this.ataque = ataque;
+        this.defensa = defensa;
+        this.movimiento = "";
+        this.nivel = 1;
+        this.tipo = "";
+    }
+
+    flight() {
+        if (!this.movimiento) {
+            throw new Error("No se especifica ningún movimiento.")
+        }
+    }
+
+    canFly() {
+        if (!this.tipo) {
+            throw new Error("No se especifica ningún.")
+        }
+        return this.tipo.includes('volar');
+    }
+}
+```
+
+
+Sea la clase `Charizard` que requiere:
+- El constructor toma 4 parámetros (HP, ataque, defensa, movimiento)
+- El constructor configura el movimiento y el tipo (para "disparar/volar") además de establecer HP, ataque y defensa como el constructor de superclase.
+- Sobreescribe el método fight. Si se especifica un movimiento, imprime una declaración que indique que se está utilizando el movimiento y devuelve el campo de ataque. Si no, arroja un error.
+
+
+```js
+class Charizard extends Pokemon {
+    constructor(HP, ataque, defensa, movimiento) {
+        super(HP, ataque, defensa)
+        this.movimiento = movimiento;
+        this.tipo = "disparar/volar"
+    }
+
+    flight() {
+        if (!this.movimiento) {
+            throw Error("No se especifica ningún movimiento.")
+        }
+        console.log(`Se está utilizando el movimiento ${this.moviemiento}.`)
+        return this.ataque;
+    }
+}
+```
+
+Sean nuestro ejemplos de uso los siguientes:
+```js
+try {
+    const poke = new Pokemon(100, 70, 30);
+    poke.fight();
+} catch(e) {
+    console.log(e.message);
+}
+
+const chari = new Charizard(200, 80, 80, 'Onda ígnea');
+chari.fight();
+console.log(chari.canFly());
+```
+
+![Alt text](img/image-6.png)
