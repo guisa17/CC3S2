@@ -78,7 +78,6 @@ html, body {
     color: maroon;
   }
   #movieInfo {
-    display: none;
     padding: 2ex;
     position: absolute;
     border: 2px double grey;
