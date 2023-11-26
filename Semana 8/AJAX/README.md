@@ -2,7 +2,7 @@
 
 - Guillermo Ronie Salcedo Alvarez - 20210164D
 
-Iniciaremos con esta actividad instalando las gemas necesarias `bundle` y realizando la migración respectiva `rails db:migrate`.
+Iniciaremos con esta actividad instalando las gemas necesarias `bundle`, crear la tabla `Moviegoers` a través de `rails generate migration CreateMoviegoers` realizando la migración respectiva `rails db:migrate`.
 
 ## Parte 1
 
