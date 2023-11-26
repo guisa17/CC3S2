@@ -1,3 +1,5 @@
+<!-- app/views/movies/show.html.erb -->
+
 <h1>Details about <%= @movie.title %></h1>
 
 <div id="metadata">
@@ -7,10 +9,5 @@
   </ul>
 </div>
 
-<div id="description">
-  <h2>Description:</h2>
-  <p> <%= @movie.description %> </p>
-</div>
-
-<%= link_to 'Edit this movie', edit_movie_path(@movie), :class => 'btn' %>
-<%= link_to 'Back to movie list', movies_path, :class => 'btn btn-primary' %>
+<%= render partial: 'movie', locals: { movie: @movie } %>
+<%= link_to 'Back to movie list', movies_path, class: 'btn btn-primary' %>

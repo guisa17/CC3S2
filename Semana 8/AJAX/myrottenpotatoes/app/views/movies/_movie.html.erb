@@ -1,0 +1,9 @@
+<!-- app/views/movies/_movie.html.erb -->
+
+<div>
+    <h2>Description: </h2>
+    <p><%= @movie.description %></p>
+</div>
+
+<%= link_to 'Edit Movie', edit_movie_path(@movie), class: 'btn btn-primary' %>
+<%= link_to 'Close', '', id: 'closeLink', class: 'btn btn-secondary' %>
