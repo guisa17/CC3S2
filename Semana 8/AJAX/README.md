@@ -71,3 +71,66 @@ var MoviePopup = {
 };
 $(MoviePopup.setup);
 ```
+
+La explicación de este código la dividiremos en cuatro partes:
+
+1. `MoviePopup.setup`: Primero, crearemos un `div` escondido con el id `MovieInfo`, en donde se mostrará la descripción de la película en la que hagamos click. Dicho elemento, se agregará al final de nuestro `body` (`.appendTo`). Finalmente, establecemos que al hacer click sobre los elemento con id `#movies`, llamaremos al método `getMovieInfo`.
+
+2. `getMovieInfo`: Realizaremos una solicitud AJAX (`$.ajax`) de tipo `get` hacia el enlace al que se hizo click. Si nuestra solicitud tiene éxito, se llama al método `showMovieInfo`; de lo contrario, se muestran los mensajes de error.
+
+3. `showMovieInfo`: Nos encargaremos de mostrar la información, para ello, primero calculamos las dimensiones del popup y lo centramos en la ventana. Y llenaremos con los datos recibidos `data`. Por otro lado, se establece que al hacer click sobre un elemento con id `closeLink`, llamaremos al método `hideMovieInfo`.
+
+4. `hideMovieInfo`: Este método oculta el popup de la ventana por medio de `.hide()`.
+
+
+Adicionalmente, agregaremos el siguiente bloque de `CSS` para especificar la posición absoluta de nuestro popup. Agregaremos lo siguiente en `app/assets/stylesheet/application.css`:
+
+```css
+#movieInfo {
+  padding: 2ex;
+  position: absolute;
+  border: 2px double grey;
+  background: wheat;
+}
+```
+
+Algunos detalles que han de considerarse para que se muestre de manera correcta el popup en nuestra aplicación son las siguiente:
+
+- Actualizaremos nuestra vista de aplicación `app/views/layouts/application.html.erb`, tal que deberíamos tener lo siguiente:
+
+    ```html
+    <head>
+    <title> RottenPotatoes! </title>
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+    <%= javascript_include_tag 'https://code.jquery.com/jquery-3.6.4.min.js' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag :application %>
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag 'movie_popup' %>
+    </head>
+    ```
+
+- Nuestra vista parcial ha sido modificada de la siguiente manera, con el fin de que al clickear sobre algún título, también se muestre el título al que nos estamos refiriendo:
+
+
+  ```html
+  <!-- app/views/movies/_movie.html.erb -->
+  <div>
+      <h2>Description: </h2>
+      <p><%= @movie.title %></p>
+      <p><%= @movie.description %></p>
+  </div>
+
+  <%= link_to 'Edit Movie', edit_movie_path(@movie), class: 'btn btn-primary' %>
+  <%= link_to 'Close', '', id: 'closeLink', class: 'btn btn-secondary' %>
+  ```
+
+- En nuestra vista `show ` se ha agregado la siguiente línea `<%= render partial: 'movie', locals: { movie: @movie } %>`, tal que, cuando nos dirijamos a este, se nos renderizará la vista parcial en su lugar.
+
+- Finalmente, en nuestra archivo `manifest.js` que se encuentra en `app/assets/config`, agegaremos la siguiente línea `//= link movie_popup.js`, con el fin de que nuestro archivo `movie_popup.js` que hemos creado hace poco, se vuelva activo y sea procesado en nuestra aplicación.
+
+
+Al ejecutar nuestro servidor `rails server`, obtendremos el siguiente resultado al clickear sobre el enlace de la película `Star Wars`:
+![Alt text](img/image.png)
+Actualmente, nuestra base de datos no posee los datos de descripción, por este motivo es que no se muestra descripción alguna.
+
