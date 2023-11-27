@@ -31,7 +31,7 @@ La acción del controlador sabe si `show` fue llamada desde JavaScript o por HTT
 
 
 ## Parte 2
-**
+
 **¿Cómo debería construir y lanzar la petición XHR el código JavaScript?** Queremos que la ventana flotante aparezca cuando clickeamos en el enlace que tiene el nombre de la película, para ello, crearemos el archivo `movie_popup.js` en el directorio `app/assets/javascripts`, y haremos uso del siguiente bloque de código.
 
 
