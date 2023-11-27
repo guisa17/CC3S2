@@ -141,5 +141,10 @@ Una advertencia a considerarse al usar JavaScript para crear nuevos elementos di
 
 **¿Cuál es solución que brinda jQuery a este problema?**
 
-  Para resolver este problema, con `jQuery`.
+  Para resolver este problema, con `jQuery`. a través del uso de delegación de eventos `on()`, emplearemos la siguiente línea en su lugar:
 
+  ```js
+  $document.on('click', '.myClass', func)
+  ```
+
+De esta manera, estamos delegando el manejo de eventos al documento, tal que se asegura que en cualquier futuro que coincida con `myClass`, también se activará el manejador de eventos. Eso resulta útil en aplicaciones web interactivas donde se generan o modifican elementos en respuestas a acción del usuario.
