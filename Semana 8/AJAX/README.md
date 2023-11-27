@@ -134,3 +134,12 @@ Al ejecutar nuestro servidor `rails server`, obtendremos el siguiente resultado 
 ![Alt text](img/image.png)
 Actualmente, nuestra base de datos no posee los datos de descripción, por este motivo es que no se muestra descripción alguna.
 
+
+## Parte 3
+
+Una advertencia a considerarse al usar JavaScript para crear nuevos elementos dinámicamente en tiempo de ejecución es cuando registramos un manejadador de eventos con `$(.myClass).on('click', func)`, pues, este solo se aplicará a los elementos existentes que coincida con `myClass` al momento de la llamada inicial. Sin embargo, si se crean nuevos elementos con `myClass` después de la carga inicial y de la llamada inicial, no serán considerados en el manejador de eventos, ya que `on` solo puede asociar manejadores a elementos que existen en ese momento.
+
+**¿Cuál es solución que brinda jQuery a este problema?**
+
+  Para resolver este problema, con `jQuery`.
+
