@@ -2015,3 +2015,36 @@ puma (5.6.7) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
 puma (5.6.7) lib/puma/request.rb:76:in `handle_request'
 puma (5.6.7) lib/puma/server.rb:443:in `process_client'
 puma (5.6.7) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2023-11-29 09:46:39 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/movies" for 127.0.0.1 at 2023-11-29 09:46:39 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 41.1ms | Allocations: 32540)
+  Rendered layout layouts/application.html.haml (Duration: 108.9ms | Allocations: 61383)
+Completed 200 OK in 143ms (Views: 112.4ms | ActiveRecord: 1.8ms | Allocations: 74945)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-11-29 09:46:41 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.4ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 7.9ms | Allocations: 2377)
+  Rendered layout layouts/application.html.haml (Duration: 15.5ms | Allocations: 5211)
+Completed 200 OK in 18ms (Views: 16.0ms | ActiveRecord: 0.4ms | Allocations: 5659)
+
+
+Started GET "/movies/new" for 127.0.0.1 at 2023-11-29 09:46:41 -0500
+Processing by MoviesController#new as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/new.html.haml within layouts/application
+  Rendered movies/new.html.haml within layouts/application (Duration: 27.8ms | Allocations: 8624)
+  Rendered layout layouts/application.html.haml (Duration: 35.9ms | Allocations: 11590)
+Completed 200 OK in 38ms (Views: 36.7ms | ActiveRecord: 0.0ms | Allocations: 12106)
+
+
