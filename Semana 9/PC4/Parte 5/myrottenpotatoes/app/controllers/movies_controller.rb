@@ -20,9 +20,11 @@ class MoviesController < ApplicationController
     end
   end
   def edit
+    authorize_user!
     @movie = Movie.find params[:id]
   end
   def update
+    authorize_user!
     @movie = Movie.find params[:id]
     if (@movie.update_attributes(movie_params))
       redirect_to movie_path(@movie), :notice => "#{@movie.title} updated."
@@ -41,6 +43,13 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie)
     params[:movie].permit(:title,:rating,:release_date)
+  end
+
+  def authorize_user!
+    unless @current_user && @current_user == @user_id
+      flash[:alert] = "Not authorized to edit."
+      redirect_to movies_path
+    end
   end
 end
 
