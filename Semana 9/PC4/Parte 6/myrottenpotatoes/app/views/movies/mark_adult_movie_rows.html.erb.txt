@@ -1,0 +1,1 @@
+  <div class="row<%= (' adult' unless movie.rating =~ /^G|PG$/) %>">

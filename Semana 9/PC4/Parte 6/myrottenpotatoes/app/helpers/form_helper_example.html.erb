@@ -1,0 +1,10 @@
+<h2>Create New Movie</h2>
+<%= form_tag movies_path, :method => :post, :class => 'form' do %>
+  <%= label :movie, :title, 'Title', :class => 'form-control' %>
+  <%= text_field :movie, :title, :class => 'form-control' %>
+  <%= label :movie, :rating, 'Rating', :class => 'form-control' %>
+  <%= select :movie, :rating, ['G','PG','PG-13','R','NC-17'], :class => 'form-control' %>
+  <%= label :movie, :release_date, 'Released On' %>
+  <%= date_select :movie, :release_date, :class => 'form-control' %>
+  <%= submit_tag 'Save Changes' %>
+<% end %>

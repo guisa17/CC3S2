@@ -1,0 +1,13 @@
+<!-- app/views/movies/show.html.erb -->
+
+<h1>Details about <%= @movie.title %></h1>
+
+<div id="metadata">
+  <ul id="details">
+    <li> Rating: <%= @movie.rating %> </li>
+    <li> Released on: <%= @movie.release_date.strftime('%F') %> </li>
+  </ul>
+</div>
+
+<%= render partial: 'movie', locals: { movie: @movie } %>
+<%= link_to 'Back to movie list', movies_path, class: 'btn btn-primary' %>
