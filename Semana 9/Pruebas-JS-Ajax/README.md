@@ -7,11 +7,17 @@ Empezaremos con el uso de `Jasmine` insertando `gem "jasmine"` en nuestro Gemfil
 ```bash
 rails generate jasmine:install 
 mkdir spec/javascripts/fixtures 
-curl https://raw.githubusercontent.com/velesin/jasmine-jquery/master/lib/jasmine-jquery.js
-    > spec/javascripts/helpers/jasmine-jquery.js 
 git add spec/javascripts 
 ```
-
 ![Alt text](image.png)
+
+Una vez realizado esto, pasaremos a crear nuestro archivo `basic_check_spec.js`, en donde incluiremos el siguiente código:
+
+```js
+describe ('Jasmine basic check', function() { 
+    it('works', function() { expect(true).toBe(true); }); 
+});
+```
+
 
 
