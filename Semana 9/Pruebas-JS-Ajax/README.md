@@ -92,4 +92,64 @@ it('calls correct URL', function() {
     });
 ```
 
-Las siguientes líneas nos verifican 
+Las siguientes líneas nos verifican si al hacer click sobre el enlace de una película, se realice la solicitud Ajax con una URL `'movies/1'`. El papel que cumple `spyOn` en Jasmine es espiar funciones y rastrear su comportamiento. Para nuestro caso, espiaremos a `$.ajax`, con lo que podremos verificar cómo se utiliza y qué argumentos recibe. Por otro lado, en cuanto a `stubs`, haremos uso de él por medio de `and.callFake` que nos permite simular el comportamiento de `$.ajax` durante la prueba.
+
+
+**¿Qué hacen las siguientes líneas del código anterior?**
+
+```js
+ let htmlResponse = readFixtures('movie_info.html');
+        spyOn($, 'ajax').and.callFake(function(ajaxArgs) { 
+          ajaxArgs.success(htmlResponse, '200');
+        });
+        $('#movies a').trigger('click');
+      });
+      it('makes #movieInfo visible', function() {
+        expect($('#movieInfo')).toBeVisible();
+      });
+      it('places movie title in #movieInfo', function() {
+        expect($('#movieInfo').text()).toContain('Casablanca');
+```
+
+Las siguientes líneas simulan una llamada exitosa al hacer click en un enlace de una película por medio de un comportamiento falso para la función `$.ajax` que devuelve datos simulados. Primero, cargamos un fixture `movie_info.html` en la variable `htmlResponse` que simulará la respuesta del servidor. Seguidamente, se espía la función `$.ajax` para simular una llamada exitosa `add.callFake`. Luego, se simula el hacer click sobre el enlace de la película, y verificamos si al dar click, el id `#movieInfo` sea visible y contiene la cadena `Casablanca`.
+
+
+**Dado que Jasmine carga todos los ficheros JavaScript antes de ejecutar ningún ejemplo, la llamada a setup (línea 34 del codigo siguiente llamado movie_popup.js)ocurre antes de que se ejecuten nuestras pruebas, comprueba que dicha función hace su trabajo y muestra los resultados.**
+
+```js
+var MoviePopup = {
+  setup: function() {
+    // add hidden 'div' to end of page to display popup:
+    let popupDiv = $('<div id="movieInfo"></div>');
+    popupDiv.hide().appendTo($('body'));
+    $(document).on('click', '#movies a', MoviePopup.getMovieInfo);
+  }
+  ,getMovieInfo: function() {
+    $.ajax({type: 'GET',
+            url: $(this).attr('href'),
+            timeout: 5000,
+            success: MoviePopup.showMovieInfo,
+            error: function(xhrObj, textStatus, exception) { alert('Error!'); }
+            // 'success' and 'error' functions will be passed 3 args
+           });
+    return(false);
+  }
+  ,showMovieInfo: function(data, requestStatus, xhrObject) {
+    // center a floater 1/2 as wide and 1/4 as tall as screen
+    let oneFourth = Math.ceil($(window).width() / 4);
+    $('#movieInfo').
+      css({'left': oneFourth,  'width': 2*oneFourth, 'top': 250}).
+      html(data).
+      show();
+    // make the Close link in the hidden element work
+    $('#closeLink').click(MoviePopup.hideMovieInfo);
+    return(false);  // prevent default link action
+  }
+  ,hideMovieInfo: function() {
+    $('#movieInfo').hide();
+    return(false);
+  }
+};
+$(MoviePopup.setup);
+```
+
