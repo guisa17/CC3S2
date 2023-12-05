@@ -9,7 +9,7 @@ rails generate jasmine:install
 mkdir spec/javascripts/fixtures 
 git add spec/javascripts 
 ```
-![Alt text](image.png)
+![Alt text](img/image.png)
 
 Una vez realizado esto, pasaremos a crear nuestro archivo `basic_check_spec.js`, en donde incluiremos el siguiente código:
 
@@ -20,7 +20,7 @@ describe ('Jasmine basic check', function() {
 ```
 
 Luego, ejecutaremos el comando `rake jasmine` para realizar las pruebas Jasmine respectivas. Nos mostrará qué tenemos una prueba spec, así como el mensaje que hemos definido en el código anterior.
-![Alt text](image-1.png)
+![Alt text](img/image-1.png)
 
 
 **¿Cuáles son los problemas que se tiene cuando se debe probar Ajax?**
@@ -77,7 +77,7 @@ describe('MoviePopup', function() {
 ```
 
 Una vez ejecutado, se nos mostrará la siguiente ventana:
-![Alt text](image-2.png)
+![Alt text](img/image-2.png)
 
 En donde, todas nuestras pruebas han fallado debido a un `ReferenceError`, en donde las funciones y objetos que estamos utilizando en el script de prueba Jasmine no están definidos. Para nuestro caso, no se han cargado dependencias necesarias como `Jasmine-jQuery` y `jQuery`.
 
@@ -153,3 +153,99 @@ var MoviePopup = {
 $(MoviePopup.setup);
 ```
 
+La función `setup` en el archivo anterior `movie_popup.js` permite crear el entorno para la funcionalidad popup. Se nos añade el id `#movieInfo` al final de la página, se oculta, y se establece el manejador de enlaces `#movies a`. Luego, la función `getMovieInfo` se encargará de realizar la solcitud Ajax al hacer click sobre el enlace y, finalmente, se mostrará la información en un recuadro.
+
+![Alt text](img/image-3.png)
+
+
+**Indica cuales son los stubs y fixtures disponibles en Jasmine y Jasmine-jQuery.**
+
+En Jasmine, los stubs puede usar el método `spyOn` para crear que stub que rastree llamadas a una función y permita especificar un comportamiento falso usando `add.callFake` o `add.returnValue`. Por otro lado, el concepto de `fixtures` en Jasmine-jQuery hace referencia a un conjunto de datos de prueba que se utilizan para simular el entorno de prueba. Se nos proporciona funciones para cargar y manipular fixtures en las pruebas `loadFixtures` y `readFixtures`.
+
+
+**Como en RSpec, Jasmine permite ejecutar código de inicialización y desmantelamiento de pruebas utilizando beforeEach y afterEach. El código de inicialización carga el fixture HTML mostrado en el código siguiente, para imitar el entorno que el manejador getMovieInfo vería si fuera llamado después de mostrar la lista de películas.**
+
+```js
+<div id="movies">
+  <div class="row">
+    <div class="col-8"><a href="/movies/1">Casablanca</a></div>
+    <div class="col-2">PG</div>
+    <div class="col-2">1943-01-23</div>
+  </div>
+</div>
+```
+
+En Jasmine, usamos la función `loadFixtures` para cargar el fixture anterior, imitando el manejador `getMovieInfo` que observaría después de mostrar la lista de películas. Durante las pruebas, estos fixtures se cargarán dentro de `div#jasmine-fixtures` ubicado en `div#jasmine_content`. Luego de cada prueba, se podrá usar `afterEach` para realizar la limpieza necesaria, manteniendo la independecia de las pruebas.
+
+
+## Ejercicios
+
+1. **Inconveniente en la herencia de prototipos.**
+Para aprovechar las clausuras y lograr atributos privados, creamos un constructor de objetos `User` en JavaScript que acepte un nombre de usuario y una contraseña. Luego, proporcionamos el método `checkPassword` para verificar si la contraseña proporcionada es correcta, mientras mantienes la contraseña como un atributo privado.
+
+    ```js
+    function User(username, password) {
+      let _password = password;
+
+      this.checkPassword = function(inputPassword) {
+        return _password === inputPassword;
+      };
+    }
+    ```
+
+
+2. **Identificación de filas que estás ocultas.**
+Supongamos que las filas ocultas en la tabla `movies` no pueden ser modificadas en el servidor. Podemos identificar las filas ocultas usando solo JavaScript del lado del cliente mediante el siguiente código, en donde se aprovecha la propiedad `hidden` en HTML.
+
+    ```js
+    let filasOcultas = document.querySelectorAll('#movies .row[hidden]');
+    ```
+
+
+3. **Menú cascada en Ajax.**
+El siguiente código AJAX asume una estructura básica para el menú cascada
+
+    ```js
+    $('#menuA').change(function() {
+      var selectedOptionA = $(this).val();
+
+      // Solicitud AJAX para opción B
+      $.ajax({
+        url: '/modelA/' + selectedOptionA + '/modelB_options',
+        method: 'GET',
+        success: function(optionsB) {
+          $('#menuB').empty();
+          optionsB.forEach(function(optionB) {
+            $('#menuB').append($('<option>', { value: optionB.id, text: optionB.name }));
+          });
+        },
+        error: function() {
+          console.error('Error al obtener las opciones de B.');
+        }
+      });
+    });
+    ```
+
+4. **Validación de entradas del formulario antes de que sea enviado.**
+Extenderemos la función de validación en ActiveModel para generar automáticamente código JavaScript que valide las entradas del formulario antes del envío. A continuación, se muestra un ejemplo básico utilizando jQuery:
+
+    Primero, definimos las validaciones en nuestro modelo `Movie`:
+    ```rb
+    # app/models/movie.rb
+    class Movie < ApplicationRecord
+      validates :title, presence: true, uniqueness: true
+      validates :length, numericality: { greater_than: 0 }
+    end
+    ```
+
+    Luego, tendremos el siguiente código de JavaScript:
+    ```js
+    document.getElementById('formMovie').addEventListener('submit', function(event) {
+      if (document.getElementById('movie_title').value === '') {
+        alert('El título no es válido.');
+        event.preventDefault();
+        return;
+      }
+      // Validaciones adicionales
+    });
+    ```
