@@ -864,3 +864,164 @@ Migrating to CreateMoviegoers (20231124231900)
   [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
   [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
   [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies" WHERE "movies"."title" = ?[0m  [["title", "Inception"]]
+Started GET "/" for 127.0.0.1 at 2023-12-06 08:27:19 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+20231125004445_create_reviews.rb
+
+
+):
+  
+activerecord (7.0.8) lib/active_record/migration.rb:662:in `check_pending!'
+activerecord (7.0.8) lib/active_record/migration.rb:627:in `block (2 levels) in call'
+activesupport (7.0.8) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.8) lib/active_record/migration.rb:632:in `block in call'
+activerecord (7.0.8) lib/active_record/migration.rb:624:in `synchronize'
+activerecord (7.0.8) lib/active_record/migration.rb:624:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.8) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.8) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.8) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.8) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.8) lib/rails/rack/logger.rb:25:in `call'
+sprockets-rails (3.4.2) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.8) lib/rack/method_override.rb:24:in `call'
+rack (2.2.8) lib/rack/runtime.rb:22:in `call'
+activesupport (7.0.8) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.8) lib/rack/sendfile.rb:110:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.8) lib/rails/engine.rb:530:in `call'
+puma (5.6.7) lib/puma/configuration.rb:252:in `call'
+puma (5.6.7) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.7) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.7) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.7) lib/puma/server.rb:443:in `process_client'
+puma (5.6.7) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateReviews (20231125004445)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "potatoes" integer, "comments" text, "moviegoer_id" integer, "movie_id" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_moviegoer_id" ON "reviews" ("moviegoer_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_movie_id" ON "reviews" ("movie_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20231125004445"]]
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 127.0.0.1 at 2023-12-06 08:27:34 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:27:34 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.4ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 40.1ms | Allocations: 32629)
+  Rendered layout layouts/application.html.haml (Duration: 457.4ms | Allocations: 127354)
+Completed 200 OK in 514ms (Views: 461.0ms | ActiveRecord: 1.5ms | Allocations: 141654)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:30:59 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 6.0ms | Allocations: 2378)
+  Rendered layout layouts/application.html.haml (Duration: 11.2ms | Allocations: 5212)
+Completed 200 OK in 13ms (Views: 11.7ms | ActiveRecord: 0.3ms | Allocations: 5659)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:31:14 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 10.1ms | Allocations: 4704)
+  Rendered layout layouts/application.html.haml (Duration: 38.7ms | Allocations: 7718)
+Completed 200 OK in 58ms (Views: 46.5ms | ActiveRecord: 1.8ms | Allocations: 13781)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:31:15 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 15.3ms | Allocations: 2313)
+  Rendered layout layouts/application.html.haml (Duration: 61.2ms | Allocations: 5145)
+Completed 200 OK in 67ms (Views: 66.1ms | ActiveRecord: 0.3ms | Allocations: 5560)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:31:20 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.5ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 11.3ms | Allocations: 4666)
+  Rendered layout layouts/application.html.haml (Duration: 16.2ms | Allocations: 7681)
+Completed 200 OK in 29ms (Views: 16.7ms | ActiveRecord: 2.7ms | Allocations: 13719)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:35:28 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 5.3ms | Allocations: 2312)
+  Rendered layout layouts/application.html.haml (Duration: 11.3ms | Allocations: 5144)
+Completed 200 OK in 14ms (Views: 11.9ms | ActiveRecord: 0.3ms | Allocations: 5559)
+
+
+Started GET "/movies/7" for 127.0.0.1 at 2023-12-06 08:35:34 -0500
+Processing by MoviesController#show as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies" WHERE "movies"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/movies_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.haml
+  Rendering movies/show.html.haml within layouts/application
+  Rendered movies/show.html.haml within layouts/application (Duration: 8.0ms | Allocations: 5115)
+  Rendered layout layouts/application.html.haml (Duration: 13.4ms | Allocations: 7939)
+Completed 200 OK in 20ms (Views: 14.5ms | ActiveRecord: 0.3ms | Allocations: 10336)
+
+
+Started GET "/movies" for 127.0.0.1 at 2023-12-06 08:44:11 -0500
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering movies/index.html.haml within layouts/application
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.haml:15
+  Rendered movies/index.html.haml within layouts/application (Duration: 8.0ms | Allocations: 4216)
+  Rendered layout layouts/application.html.haml (Duration: 13.6ms | Allocations: 7230)
+Completed 200 OK in 25ms (Views: 15.0ms | ActiveRecord: 1.0ms | Allocations: 13074)
+
+

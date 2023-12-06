@@ -2,8 +2,13 @@ class MoviesController < ApplicationController
 
   def show
     id = params[:id] # retrieve movie ID from URI route
-    @movie = Movie.find(id) # look up movie by unique ID
+    @movie = Movie.find_by(id: id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
+
+    if @movie.nil?
+      flash[:notice] = "La película no existe."
+      redirect_to movies_path
+    end
   end
 
   def index
